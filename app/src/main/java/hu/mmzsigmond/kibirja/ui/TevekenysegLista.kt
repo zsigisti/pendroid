@@ -24,13 +24,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
-// Ami a mezokbe be van irva, meg szovegkent.
-data class TevekenysegSor(
-    val nev: String = "",
-    val orak: String = "",
-    val fogyasztas: String = "",
-)
+import hu.mmzsigmond.kibirja.domain.TevekenysegSor
 
 // Elore megadott fogyasztasok, %/ora
 private val alapTevekenysegek = listOf(
@@ -76,13 +70,17 @@ private fun TevekenysegSorSzerkeszto(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                value = t.nev,
-                onValueChange = { valtozik(t.copy(nev = it)) },
-                label = { Text("Név") },
-                singleLine = true,
-                modifier = Modifier.weight(1f),
-            )
+            if (t.egyeb) {
+                OutlinedTextField(
+                    value = t.nev,
+                    onValueChange = { valtozik(t.copy(nev = it)) },
+                    label = { Text("Név") },
+                    singleLine = true,
+                    modifier = Modifier.weight(1f),
+                )
+            } else {
+                Text(t.nev, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            }
             TextButton(onClick = torol) { Text("Törlés") }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -110,7 +108,7 @@ private fun HozzaadasGomb(hozzaad: (TevekenysegSor) -> Unit) {
             DropdownMenuItem(
                 text = { Text("Egyéb...") },
                 onClick = {
-                    hozzaad(TevekenysegSor())
+                    hozzaad(TevekenysegSor(egyeb = true))
                     nyitva = false
                 },
             )

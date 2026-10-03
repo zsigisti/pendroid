@@ -29,7 +29,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hu.mmzsigmond.kibirja.data.akkuSzazalek
+import hu.mmzsigmond.kibirja.domain.Eredmeny
+import hu.mmzsigmond.kibirja.domain.TevekenysegSor
+import hu.mmzsigmond.kibirja.domain.ellenoriz
+import hu.mmzsigmond.kibirja.domain.szamol
 import hu.mmzsigmond.kibirja.ui.theme.AppTheme
+import kotlin.math.roundToInt
 
 @Composable
 fun FoKepernyo(modifier: Modifier = Modifier) {
@@ -77,8 +82,10 @@ fun FoKepernyo(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-                // TODO: ide jon az ellenorzes es a szamolas a domain/-bol
-                hibak = listOf("A számolás még nincs megírva.")
+                val e = ellenoriz(toltottseg, osszIdo, tartalek, tevekenysegek)
+                hibak = e.hibak
+                // ha hibas, a regi eredmenyt is eltuntetjuk
+                eredmeny = e.terv?.let { szamol(it) }
             },
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -96,6 +103,27 @@ fun FoKepernyo(modifier: Modifier = Modifier) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text("Hiányos vagy hibás adatok", style = MaterialTheme.typography.titleMedium)
                     hibak.forEach { Text("• $it") }
+                }
+            }
+        }
+
+        eredmeny?.let { er ->
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(
+                        if (er.tarthato) "Kibírja!" else "Nem bírja ki",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = if (er.tarthato) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                    )
+                    Text("Várható fogyasztás: ${er.fogyasztas.roundToInt()} %")
+                    Text("A nap végén marad: ${er.maradek.roundToInt()} %")
+                    Text("A tartalékig kb. ${"%.1f".format(er.maxIdo)} órát bír.")
+                    if (er.javaslatok.isNotEmpty()) {
+                        Text("Ennyivel kevesebbet használd:")
+                        er.javaslatok.forEach { (nev, orak) ->
+                            Text("• $nev: ${"%.1f".format(orak)} óra")
+                        }
+                    }
                 }
             }
         }
