@@ -3,7 +3,7 @@
  * Csapat: #include <victory.h>
  *
  * Plusz funkciok:
- *  -
+ *  - automatikus akku lekeres (atirhato)
  */
 package hu.mmzsigmond.kibirja
 
@@ -14,8 +14,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import hu.mmzsigmond.kibirja.ui.FoKepernyo
 import hu.mmzsigmond.kibirja.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
-                    Text("Kibírja?", modifier = Modifier.padding(padding))
+                    FoKepernyo(Modifier.padding(padding))
                 }
             }
         }
