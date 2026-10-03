@@ -1,5 +1,6 @@
 /*
  * Kibirja? - akkumulator-tervezo (PENdroid 2026, 1. fordulo)
+ * Csapat: #include <victory.h>
  *
  * Plusz funkciok:
  *  -

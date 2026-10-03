@@ -3,6 +3,9 @@ KIBIRJA?
 Egy Android applikacio, ami a felhasznalo nap eleji bemenete alapjan elorejelzi,
 hogy kibirja-e az akku a nap vegeig.
 
+CSAPAT
+#include <victory.h>
+
 DEVELOPMENT
 irc: https://web.libera.chat/#kibirja (ircs://irc.libera.chat:6697/#kibirja)
 discord: https://discord.gg/CjW7ZcmhPr
