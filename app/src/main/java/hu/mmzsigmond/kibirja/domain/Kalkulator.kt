@@ -9,6 +9,7 @@ data class Eredmeny(
     val tarthato: Boolean,
     val maxIdo: Double, // ennyi orat birja a tartalekig
     val javaslatok: List<Pair<String, Double>>, // tevekenyseg, ennyi oraval kevesebbet
+    val tolteniKell: Boolean, // a javaslatokkal sem jon ki a tartalek
 )
 
 fun szamol(terv: Terv): Eredmeny {
@@ -40,5 +41,8 @@ fun szamol(terv: Terv): Eredmeny {
         hiany -= orak * sporol
     }
 
-    return Eredmeny(fogyasztas, maradek, tarthato, maxIdo, javaslatok)
+    // ha mindent levagtunk es meg mindig hianyzik valamennyi
+    val tolteniKell = hiany > 0.001
+
+    return Eredmeny(fogyasztas, maradek, tarthato, maxIdo, javaslatok, tolteniKell)
 }
